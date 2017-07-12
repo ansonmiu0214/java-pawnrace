@@ -1,9 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Anson on 12/7/2017.
@@ -17,6 +15,8 @@ public class TestBoardGame {
 
     assertNull(game.getLastMove());
     assertEquals(game.getCurrentPlayer(), Colour.WHITE);
+    assertTrue(game.getValidMoves(Colour.WHITE).size() == 14);
+    assertTrue(game.getValidMoves(Colour.BLACK).size() == 14);
   }
 
   @Test
