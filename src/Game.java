@@ -56,10 +56,12 @@ public class Game {
   }
 
   public Colour getGameResult() {
+    // Check for stalemate
     if (getValidMoves(Colour.WHITE).size() == 0 || getValidMoves(Colour.BLACK).size() == 0) {
       return Colour.NONE;
     }
 
+    // Check if all pawns of one colour are captured
     if (getPawns(Colour.WHITE).size() == 0) {
       return Colour.BLACK;
     }
@@ -68,6 +70,7 @@ public class Game {
       return Colour.WHITE;
     }
 
+    // Check if there exists a pawn past its opponent colour's base
     for (int col = 0; col < PawnRace.NUM_OF_ROWS; ++col) {
       if (board.getSquare(0, col).occupiedBy() == Colour.BLACK) {
         return Colour.BLACK;
@@ -78,6 +81,7 @@ public class Game {
       }
     }
 
+    // Game not finished
     return null;
   }
 
