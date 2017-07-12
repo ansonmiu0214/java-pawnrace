@@ -84,16 +84,12 @@ public class Board {
           System.out.print(Character.toString((char) (col + (int) 'a')));
         } else {
           Square square = getSquare(row - 1, col);
-
-          if (square != null) {
-            System.out.print(square.occupiedBy().toString());
-          } else {
-            System.out.print(" ");
-          }
+          System.out.print(square == null ? " " : square.occupiedBy().toString());
         }
 
         System.out.print(" ");
       }
+
       System.out.println();
     }
     System.out.println();
