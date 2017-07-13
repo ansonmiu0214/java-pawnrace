@@ -60,19 +60,20 @@ public class Game {
   }
 
   public Colour getGameResult() {
+    // Check if all pawns of one colour are captured
+    if (getPieces(Colour.WHITE).size() == 0) {
+      return Colour.BLACK;
+    }
+
+    if (getPieces(Colour.BLACK).size() == 0) {
+      return Colour.WHITE;
+    }
+
     // Check for stalemate
     if (getValidMoves(Colour.WHITE).size() == 0 || getValidMoves(Colour.BLACK).size() == 0) {
       return Colour.NONE;
     }
 
-    // Check if all pawns of one colour are captured
-    if (getPawns(Colour.WHITE).size() == 0) {
-      return Colour.BLACK;
-    }
-
-    if (getPawns(Colour.BLACK).size() == 0) {
-      return Colour.WHITE;
-    }
 
     // Check if there exists a pawn past its opponent colour's base
     for (int col = 0; col < PawnRace.NUM_OF_ROWS; ++col) {
@@ -89,7 +90,7 @@ public class Game {
     return null;
   }
 
-  public Set<Square> getPawns(Colour colour) {
+  public Set<Square> getPieces(Colour colour) {
     assert(colour != null && colour != Colour.NONE);
 
     Set<Square> pawns = new HashSet<>();
@@ -106,13 +107,13 @@ public class Game {
     return pawns;
   }
 
-  public Set<Move> getValidMoves(Colour colour) {
+  public List<Move> getValidMoves(Colour colour) {
     assert(colour != null && colour != Colour.NONE);
 
-    Set<Move> validMoves = new HashSet<>();
+    List<Move> validMoves = new ArrayList<>();
     BiFunction<Integer, Integer, Integer> dir = colour.getDir();
 
-    for (Square curr : getPawns(colour)) {
+    for (Square curr : getPieces(colour)) {
       int curr_r = curr.getRow();
       int curr_c = curr.getCol();
 
@@ -148,8 +149,10 @@ public class Game {
               validMoves.add(new Move(curr, cap, true, false));
             }
 
-            Square last_frm = getLastMove().getFrom();
-            Square last_to = getLastMove().getTo();
+            if (getLastMove() != null) {
+              Square last_frm = getLastMove().getFrom();
+              Square last_to = getLastMove().getTo();
+            }
 
             // TODO implement Game.getValidMoves - en passant capture
 
@@ -159,6 +162,45 @@ public class Game {
     }
 
     return validMoves;
+  }
+
+  public boolean isPassedPawn(Square square) {
+    assert(square != null);
+
+    Colour current = square.occupiedBy();
+    int curr_row = square.getRow();
+    int curr_col = square.getCol();
+
+    switch(current) {
+      case WHITE:
+        for (int col = curr_col - 1; col <= curr_col + 1; ++col) {
+          for (int row = curr_row + 1; row <= Board.BLACK_BASE + 1; ++row) {
+            if (board.isInBound(row, col)) {
+              if (board.getSquare(row, col).occupiedBy() == current.getNext()) {
+                return false;
+              }
+            }
+          }
+        }
+
+        break;
+      case BLACK:
+        for (int col = curr_col - 1; col <= curr_col + 1; ++col) {
+          for (int row = curr_row - 1; row >= Board.WHITE_BASE - 1; --row) {
+            if (board.isInBound(row, col)) {
+              if (board.getSquare(row, col).occupiedBy() == current.getNext()) {
+                return false;
+              }
+            }
+          }
+        }
+
+        break;
+      default:
+        return false;
+    }
+
+    return true;
   }
 
   public Move parseMove(String san) {
