@@ -40,8 +40,20 @@ public class Move {
   }
 
   @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Move)) {
+      return false;
+    }
+
+    Move other = (Move) obj;
+    return other.getFrom().equals(from) && other.getTo().equals(to)
+            && other.isCapture() == isCapture
+            && other.isEnPassantCapture() == isEnPassantCapture;
+  }
+
+  @Override
   public String toString() {
-    return (isCapture() ? from.toString().charAt(0) + CAPTURE : from.toString()) + to.toString();
+    return from.toString() + (isCapture() ? CAPTURE : "") + to.toString();
   }
 
 }
