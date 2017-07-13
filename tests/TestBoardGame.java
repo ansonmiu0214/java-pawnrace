@@ -1,4 +1,3 @@
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -39,6 +38,7 @@ public class TestBoardGame {
 
   @Test
   public void winLoseDraw() {
+    // Instantiation
     Game game = new Game(new Board('a', 'h'));
     assertNull(game.getGameResult());
 
@@ -48,7 +48,7 @@ public class TestBoardGame {
 
     // Black winning move
     game.unapplyMove();
-    for (Square white : game.getPawns(Colour.WHITE)) {
+    for (Square white : game.getPieces(Colour.WHITE)) {
       white.setOccupier(Colour.BLACK);
     }
     assertEquals(game.getGameResult(), Colour.BLACK);
@@ -59,7 +59,6 @@ public class TestBoardGame {
 
   @Test
   public void differentTypesOfMoves() {
-
     // Instantiation
     Board board = new Board('a', 'h');
     Game game = new Game(board);
@@ -100,6 +99,17 @@ public class TestBoardGame {
     game.applyMove(w_move2);
     assertNotEquals(board.getSquare(1, 1).occupiedBy(), Colour.WHITE);
     assertEquals(board.getSquare(2, 2).occupiedBy(), Colour.WHITE);
+  }
+
+  @Test
+  public void passedPawn() {
+    // Instantiation
+    Board board = new Board('a', 'h');
+    Game game = new Game(board);
+
+    // Black passed pawn - edge
+    game.getBoard().getSquare(1, 1).setOccupier(Colour.NONE);
+    assertTrue(game.isPassedPawn(board.getSquare(6, 0)));
   }
 
 }
