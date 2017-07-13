@@ -38,6 +38,17 @@ public class Square {
   }
 
   @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Square)) {
+      return false;
+    }
+
+    Square otherSquare = (Square) obj;
+    return otherSquare.getRow() == row && otherSquare.getCol() == col
+            && otherSquare.occupiedBy() == colour;
+  }
+
+  @Override
   public String toString() {
     return Character.toString((char) (col + (int) 'a')) + (row + 1);
   }
