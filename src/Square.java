@@ -1,7 +1,7 @@
 /**
  * Created by Anson on 11/7/2017.
  */
-public class Square {
+public class Square implements Cloneable {
 
   private final int row;
   private final int col;
@@ -51,6 +51,11 @@ public class Square {
   @Override
   public String toString() {
     return Character.toString((char) (col + (int) 'a')) + (row + 1);
+  }
+
+  @Override
+  protected Square clone() throws CloneNotSupportedException {
+    return (Square) super.clone();
   }
 
 }

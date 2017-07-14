@@ -37,4 +37,25 @@ public class TestSquare {
     assertEquals(sq5.toString(), "h8");
   }
 
+  @Test
+  public void cloneSquare() {
+    Square sq1 = new Square(0, 1, Colour.BLACK);
+
+    try {
+      Square sq2 = sq1.clone();
+      assertEquals(sq1.getRow(), 0);
+      assertEquals(sq1.getCol(), 1);
+      assertEquals(sq1.occupiedBy(), Colour.BLACK);
+      assertEquals(sq2.getRow(), 0);
+      assertEquals(sq2.getCol(), 1);
+      assertEquals(sq2.occupiedBy(), Colour.BLACK);
+
+      sq2.setOccupier(Colour.WHITE);
+      assertNotEquals(sq1.occupiedBy(), Colour.WHITE);
+      assertEquals(sq2.occupiedBy(), Colour.WHITE);
+    } catch (CloneNotSupportedException exception) {
+      exception.printStackTrace();
+    }
+  }
+
 }
