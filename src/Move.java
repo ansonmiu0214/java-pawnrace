@@ -1,12 +1,12 @@
 /**
  * Created by Anson on 11/7/2017.
  */
-public class Move {
+public class Move implements Cloneable {
 
   private static final String CAPTURE = "x";
 
-  private final Square from;
-  private final Square to;
+  private Square from;
+  private Square to;
   private final boolean isCapture;
   private final boolean isEnPassantCapture;
 
@@ -25,6 +25,14 @@ public class Move {
 
   public Square getFrom() {
     return from;
+  }
+
+  private void setFrom(Square from) {
+    this.from = from;
+  }
+
+  private void setTo(Square to) {
+    this.to = to;
   }
 
   public Square getTo() {
@@ -56,4 +64,13 @@ public class Move {
     return from.toString() + (isCapture() ? CAPTURE : "") + to.toString();
   }
 
+  @Override
+  protected Move clone() throws CloneNotSupportedException {
+    Move clone = (Move) super.clone();
+
+    clone.setFrom(this.from.clone());
+    clone.setTo(this.to.clone());
+
+    return clone;
+  }
 }
