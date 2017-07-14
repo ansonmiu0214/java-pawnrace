@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b79ded6-0f90-4875-ad20-35d194ba2c39" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/com_google_guava_guava_22_0.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java-pawnrace.iml" afterPath="$PROJECT_DIR$/java-pawnrace.iml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -697,7 +695,14 @@
       <option name="project" value="LOCAL" />
       <updated>1500016787614</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Added Guava library from Maven dependency">
+      <created>1500016818206</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1500016818206</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -793,7 +798,8 @@
     <MESSAGE value="Modified main method in PawnRace to validate and parse program arguments" />
     <MESSAGE value="Modified TestBoardGame to include passed pawn unit tests" />
     <MESSAGE value="Implemented makeMove() method in Player.java to distinguish between user and computer procedures" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented makeMove() method in Player.java to distinguish between user and computer procedures" />
+    <MESSAGE value="Added Guava library from Maven dependency" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Guava library from Maven dependency" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
