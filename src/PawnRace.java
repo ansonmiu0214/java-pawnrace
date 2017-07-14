@@ -43,16 +43,16 @@ public class PawnRace {
 
     initialisePlayers(white, black);
 
-    board.display();
+    game.getBoard().display();
 
     // Game loop
     while (game.getGameResult() == null) {
       white.makeMove();
-      board.display();
+      game.getBoard().display();
 
       if (game.getGameResult() == null) {
         black.makeMove();
-        board.display();
+        game.getBoard().display();
       }
     }
 

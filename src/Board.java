@@ -47,8 +47,8 @@ public class Board implements Cloneable {
   }
 
   public void applyMove(Move move) {
-    Square from = move.getFrom();
-    Square to = move.getTo();
+    Square from = board[move.getFrom().getRow()][move.getFrom().getCol()];
+    Square to = board[move.getTo().getRow()][move.getTo().getCol()];
 
     to.setOccupier(from.occupiedBy());
     from.setOccupier(Colour.NONE);
@@ -60,8 +60,8 @@ public class Board implements Cloneable {
   }
 
   public void unapplyMove(Move move) {
-    Square from = move.getFrom();
-    Square to = move.getTo();
+    Square from = board[move.getFrom().getRow()][move.getFrom().getCol()];
+    Square to = board[move.getTo().getRow()][move.getTo().getCol()];
 
     from.setOccupier(to.occupiedBy());
     if (move.isCapture() && !move.isEnPassantCapture()) {

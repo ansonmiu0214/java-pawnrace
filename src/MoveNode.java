@@ -1,7 +1,10 @@
+import com.google.common.collect.Sets;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by Anson on 12/7/2017.
@@ -9,7 +12,7 @@ import java.util.stream.Collectors;
 public class MoveNode {
 
   private static final int MAX_SCORE = 2;
-  private static final int DIFFICULTY = 4;
+  private static final int DIFFICULTY = 5;
 
   private final Colour original;
   private int score;
@@ -40,16 +43,33 @@ public class MoveNode {
   }
 
   public List<Move> getOptimal(Game game) {
+
     // Instantiate
     List<Move> validMoves = game.getValidMoves(original);
-    Set<MoveNode> options = new HashSet<>();
+    Set<MoveNode> options = Sets.newConcurrentHashSet();
+    Thread[] threads = new Thread[validMoves.size()];
 
-    try {
-      for (Move move : validMoves) {
-        options.add(explore(game.clone(), move, original, DIFFICULTY));
+    for (int i = 0; i < validMoves.size(); ++i) {
+      Move move = validMoves.get(i);
+      threads[i] = new Thread(() -> {
+        try {
+          options.add(explore(game.clone(), move, original, DIFFICULTY));
+        } catch (CloneNotSupportedException exception) {
+          exception.printStackTrace();
+        }
+      });
+    }
+
+    for (int i = 0; i < validMoves.size(); ++i) {
+      threads[i].start();
+    }
+
+    for (int i = 0; i < validMoves.size(); ++i) {
+      try {
+        threads[i].join();
+      } catch (InterruptedException exception) {
+        exception.printStackTrace();
       }
-    } catch (CloneNotSupportedException exception) {
-      exception.printStackTrace();
     }
 
     // Find optimal score form options
@@ -108,12 +128,13 @@ public class MoveNode {
 
       List<Move> validMoves = game.getValidMoves(game.getCurrentPlayer());
       Set<MoveNode> options = new HashSet<>();
-      try {
-        for (Move nextMove : validMoves) {
+
+      for (Move nextMove : validMoves) {
+        try {
           options.add(explore(game.clone(), nextMove, original, count - 1));
+        } catch (CloneNotSupportedException exception) {
+          exception.printStackTrace();
         }
-      } catch (CloneNotSupportedException exception) {
-        exception.printStackTrace();
       }
 
       if (game.getCurrentPlayer() == original) {
@@ -127,7 +148,6 @@ public class MoveNode {
       }
     }
 
-    game.unapplyMove();
     return node;
   }
 }
