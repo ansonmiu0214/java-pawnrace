@@ -145,4 +145,32 @@ public class TestBoardGame {
     }
   }
 
+  @Test
+  public void cloneGame() {
+    Board b = new Board('a', 'h');
+    Game g1 = new Game(b);
+
+    g1.applyMove(new Move(g1.getBoard().getSquare(1, 1), g1.getBoard().getSquare(3, 1)));
+    try {
+      Game g2 = g1.clone();
+
+      assertEquals(g1.getBoard().getSquare(1, 1).occupiedBy(), Colour.NONE);
+      assertEquals(g1.getBoard().getSquare(3, 1).occupiedBy(), Colour.WHITE);
+      assertEquals(g2.getBoard().getSquare(1, 1).occupiedBy(), Colour.NONE);
+      assertEquals(g2.getBoard().getSquare(3, 1).occupiedBy(), Colour.WHITE);
+
+      g1.unapplyMove();
+      assertEquals(g1.getBoard().getSquare(1, 1).occupiedBy(), Colour.WHITE);
+      assertEquals(g1.getBoard().getSquare(3, 1).occupiedBy(), Colour.NONE);
+      assertNotEquals(g2.getBoard().getSquare(1, 1).occupiedBy(), Colour.WHITE);
+      assertNotEquals(g2.getBoard().getSquare(3, 1).occupiedBy(), Colour.NONE);
+
+      g2.applyMove(new Move(g2.getBoard().getSquare(3, 1), g2.getBoard().getSquare(4, 1)));
+      assertEquals(g2.getBoard().getSquare(4, 1).occupiedBy(), Colour.WHITE);
+      assertNotEquals(g1.getBoard().getSquare(4, 1).occupiedBy(), Colour.WHITE);
+    } catch (CloneNotSupportedException exception) {
+      exception.printStackTrace();
+    }
+  }
+
 }

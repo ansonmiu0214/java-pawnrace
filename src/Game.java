@@ -1,13 +1,14 @@
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
 /**
  * Created by Anson on 11/7/2017.
  */
-public class Game {
+public class Game implements Cloneable {
 
-  private final Board board;
-  private final Stack<Move> history;
+  private Board board;
+  private Stack<Move> history;
   private Colour currentPlayer;
 
   public Game(Board board) {
@@ -20,6 +21,18 @@ public class Game {
 
   public Board getBoard() {
     return board;
+  }
+
+  private void setBoard(Board board) {
+    assert(board != null);
+
+    this.board = board;
+  }
+
+  private void setHistory(Stack<Move> history) {
+    assert(history != null);
+
+    this.history = history;
   }
 
   public Colour getCurrentPlayer() {
@@ -257,5 +270,27 @@ public class Game {
     return null;
   }
 
+  private Stack<Move> cloneHistory() {
+    Stack<Move> newHistory = new Stack<>();
 
+    try {
+      for (Move move : history) {
+        newHistory.push(move.clone());
+      }
+    } catch (CloneNotSupportedException exception) {
+      exception.printStackTrace();
+    }
+
+    return newHistory;
+  }
+
+  @Override
+  protected Game clone() throws CloneNotSupportedException {
+    Game clone = (Game) super.clone();
+
+    clone.setBoard(this.board.clone());
+    clone.setHistory(this.cloneHistory());
+
+    return clone;
+  }
 }
