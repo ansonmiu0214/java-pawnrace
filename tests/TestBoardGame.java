@@ -83,7 +83,9 @@ public class TestBoardGame {
     assertEquals(board.getSquare(3, 2).occupiedBy(), Colour.WHITE);
     assertEquals(game.getCurrentPlayer(), Colour.BLACK);
 
-    // Capture move (B)
+    // En Passant Capture move (B)
+    assertEquals(game.getCurrentPlayer(), Colour.BLACK);
+    assertTrue(game.getValidMoves(Colour.BLACK).contains(b_move2));
     game.applyMove(b_move2);
     assertNotEquals(board.getSquare(3, 1).occupiedBy(), Colour.BLACK);
     assertEquals(board.getSquare(2, 2).occupiedBy(), Colour.BLACK);
@@ -95,7 +97,7 @@ public class TestBoardGame {
     assertNotEquals(board.getSquare(2, 2).occupiedBy(), Colour.BLACK);
     game.applyMove(b_move2);
 
-    // En passant capture move (W)
+    // Capture move (W)
     game.applyMove(w_move2);
     assertNotEquals(board.getSquare(1, 1).occupiedBy(), Colour.WHITE);
     assertEquals(board.getSquare(2, 2).occupiedBy(), Colour.WHITE);
