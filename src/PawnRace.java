@@ -56,7 +56,6 @@ public class PawnRace {
       }
     }
 
-    String winner;
     switch (game.getGameResult()) {
       case WHITE:
         System.out.println("The winner is <WHITE>.");

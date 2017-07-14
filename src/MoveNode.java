@@ -4,14 +4,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Created by Anson on 12/7/2017.
  */
 public class MoveNode {
 
-  private static final int MAX_SCORE = 2;
+  private static final int MAX_SCORE = 7;
   private static final int DIFFICULTY = 5;
 
   private final Colour original;
@@ -100,7 +99,6 @@ public class MoveNode {
       for (Square cpu : game.getPieces(game.getCurrentPlayer())) {
         if (game.isPassedPawn(cpu)) {
           node.setScore(-MAX_SCORE);
-          game.unapplyMove();
           return node;
         }
       }
@@ -109,7 +107,6 @@ public class MoveNode {
       for (Square user : game.getPieces(original)) {
         if (game.isPassedPawn(user)) {
           node.setScore(MAX_SCORE);
-          game.unapplyMove();
           return node;
         }
       }
@@ -141,10 +138,13 @@ public class MoveNode {
         // Set score as the sum of the option scores
         node.setScore(options.stream()
                 .map(MoveNode::getScore)
-                .reduce(0, (x, y) -> x + y));
+                .reduce(0, Math::addExact));
       } else {
         // Set score as minimum -- from CPU's point of view
-        node.setScore(options.stream().map(MoveNode::getScore).reduce(Math::min).get());
+        node.setScore(options.stream()
+                .map(MoveNode::getScore)
+                .reduce(Math::min)
+                .get());
       }
     }
 
