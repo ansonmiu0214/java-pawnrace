@@ -112,6 +112,37 @@ public class TestBoardGame {
     // Black passed pawn - edge
     game.getBoard().getSquare(1, 1).setOccupier(Colour.NONE);
     assertTrue(game.isPassedPawn(board.getSquare(6, 0)));
+
+    // TODO add more test cases for TestBoardGame - passedPawn
+  }
+
+  @Test
+  public void cloneBoard() {
+    Board b1 = new Board('a', 'h');
+    assertEquals(b1.getSquare(1, 1).occupiedBy(), Colour.WHITE);
+    assertEquals(b1.getSquare(3, 1).occupiedBy(), Colour.NONE);
+
+    b1.applyMove(new Move(b1.getSquare(1, 1), b1.getSquare(3, 1)));
+    try {
+      Board b2 = b1.clone();
+
+      assertEquals(b1.getSquare(1, 1).occupiedBy(), Colour.NONE);
+      assertEquals(b1.getSquare(3, 1).occupiedBy(), Colour.WHITE);
+      assertEquals(b2.getSquare(1, 1).occupiedBy(), Colour.NONE);
+      assertEquals(b2.getSquare(3, 1).occupiedBy(), Colour.WHITE);
+
+      b1.unapplyMove(new Move(b1.getSquare(1, 1), b1.getSquare(3, 1)));
+      assertEquals(b1.getSquare(1, 1).occupiedBy(), Colour.WHITE);
+      assertEquals(b1.getSquare(3, 1).occupiedBy(), Colour.NONE);
+      assertNotEquals(b2.getSquare(1, 1).occupiedBy(), Colour.WHITE);
+      assertNotEquals(b2.getSquare(3, 1).occupiedBy(), Colour.NONE);
+
+      b2.applyMove(new Move(b2.getSquare(3, 1), b2.getSquare(4, 1)));
+      assertEquals(b2.getSquare(4, 1).occupiedBy(), Colour.WHITE);
+      assertNotEquals(b1.getSquare(4, 1).occupiedBy(), Colour.WHITE);
+    } catch (CloneNotSupportedException exception) {
+      exception.printStackTrace();
+    }
   }
 
 }

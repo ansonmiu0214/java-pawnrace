@@ -1,13 +1,13 @@
 /**
  * Created by Anson on 11/7/2017.
  */
-public class Board {
+public class Board implements Cloneable {
 
   private static final int MARGIN = 2;
   static final int WHITE_BASE = 1;
   static final int BLACK_BASE = 6;
 
-  private final Square[][] board;
+  private Square[][] board;
 
   public Board(char whiteGap, char blackGap) {
     this.board = new Square[PawnRace.NUM_OF_ROWS][PawnRace.NUM_OF_ROWS];
@@ -32,7 +32,10 @@ public class Board {
         }
       }
     }
+  }
 
+  private void setBoard(Square[][] board) {
+    this.board = board;
   }
 
   public Square getSquare(int row, int col) {
@@ -93,6 +96,20 @@ public class Board {
       System.out.println();
     }
     System.out.println();
+  }
+
+  @Override
+  protected Board clone() throws CloneNotSupportedException {
+    Board clone = (Board) super.clone();
+    Square[][] grid = new Square[PawnRace.NUM_OF_ROWS][PawnRace.NUM_OF_ROWS];
+    for (int row = 0; row < PawnRace.NUM_OF_ROWS; ++row) {
+      for (int col = 0; col < PawnRace.NUM_OF_ROWS; ++col) {
+        grid[row][col] = board[row][col].clone();
+      }
+    }
+
+    clone.setBoard(grid);
+    return clone;
   }
 
 }
