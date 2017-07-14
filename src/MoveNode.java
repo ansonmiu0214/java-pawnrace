@@ -44,8 +44,12 @@ public class MoveNode {
     List<Move> validMoves = game.getValidMoves(original);
     Set<MoveNode> options = new HashSet<>();
 
-    for (Move move : validMoves) {
-      options.add(explore(game, move, original, DIFFICULTY));
+    try {
+      for (Move move : validMoves) {
+        options.add(explore(game.clone(), move, original, DIFFICULTY));
+      }
+    } catch (CloneNotSupportedException exception) {
+      exception.printStackTrace();
     }
 
     // Find optimal score form options
@@ -104,8 +108,12 @@ public class MoveNode {
 
       List<Move> validMoves = game.getValidMoves(game.getCurrentPlayer());
       Set<MoveNode> options = new HashSet<>();
-      for (Move nextMove : validMoves) {
-        options.add(explore(game, nextMove, original, count - 1));
+      try {
+        for (Move nextMove : validMoves) {
+          options.add(explore(game.clone(), nextMove, original, count - 1));
+        }
+      } catch (CloneNotSupportedException exception) {
+        exception.printStackTrace();
       }
 
       if (game.getCurrentPlayer() == original) {
