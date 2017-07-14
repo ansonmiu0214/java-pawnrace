@@ -150,12 +150,21 @@ public class Game {
             }
 
             if (getLastMove() != null) {
-              Square last_frm = getLastMove().getFrom();
-              Square last_to = getLastMove().getTo();
+              if (!getLastMove().isCapture()) {
+                Square last_frm = getLastMove().getFrom();
+                Square last_to = getLastMove().getTo();
+
+                if (Math.abs(last_frm.getRow() - last_to.getRow()) == 2) {
+                  Square between = (last_to.getRow() > last_frm.getRow())
+                          ? board.getSquare(last_frm.getRow() + 1, last_frm.getCol())
+                          : board.getSquare(last_to.getRow() + 1, last_to.getCol());
+
+                  if (between.equals(cap)) {
+                    validMoves.add(new Move(curr, cap, true, true));
+                  }
+                }
+              }
             }
-
-            // TODO implement Game.getValidMoves - en passant capture
-
           }
         }
       }
@@ -204,7 +213,47 @@ public class Game {
   }
 
   public Move parseMove(String san) {
-    // TODO implement Game.parseMove
+    san = san.toLowerCase();
+
+    // Check argument length
+    if (!(san.length() == 4 || san.length() == 5)) {
+      return null;
+    }
+
+    int from_row, from_col, to_row, to_col;
+
+    // Check syntax
+    switch (san.length()) {
+      case 4:
+        // Parse rank/file
+        from_row = Character.getNumericValue(san.charAt(1)) - 1;
+        from_col = san.charAt(0) - 'a';
+        to_row = Character.getNumericValue(san.charAt(3)) - 1;
+        to_col = san.charAt(2) - 'a';
+
+        // Check inbounds
+        if (!(board.isInBound(from_row, from_col) && board.isInBound(to_row, to_col))) {
+          return null;
+        }
+
+        return new Move(board.getSquare(from_row, from_col), board.getSquare(to_row, to_col));
+
+      case 5:
+        // Parse rank/file
+        from_row = Character.getNumericValue(san.charAt(1)) - 1;
+        from_col = san.charAt(0) - 'a';
+        to_row = Character.getNumericValue(san.charAt(4)) - 1;
+        to_col = san.charAt(3) - 'a';
+
+        // Check inbounds
+        if (!(board.isInBound(from_row, from_col) && board.isInBound(to_row, to_col))) {
+          return null;
+        }
+
+        return new Move(board.getSquare(from_row, from_col), board.getSquare(to_row, to_col), true,
+                board.getSquare(to_row, to_col).occupiedBy() == Colour.NONE);
+    }
+
     return null;
   }
 
